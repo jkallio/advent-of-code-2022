@@ -115,11 +115,11 @@ fn read_graph_map(filename: &str) -> Result<HeightMap, std::io::Error> {
             let point = Point::new(x as i32, y as i32);
             let c = match &c {
                 'S' => {
-                    start = point.clone();
+                    start = point;
                     'a'
                 }
                 'E' => {
-                    end = point.clone();
+                    end = point;
                     'z'
                 }
                 _ => c,
@@ -164,7 +164,7 @@ fn shortest_path(map: &HashMap<u64, u32>, start: &Point, end: &Point) -> Path {
     let mut heap: BinaryHeap<Path> = BinaryHeap::new();
     heap.push(Path { path: vec![*start] });
     while let Some(path) = heap.pop() {
-        let point = path.path.last().unwrap().clone();
+        let point = *path.path.last().unwrap();
         let path = path.path;
         let point_height = map.get(&hash(&point)).unwrap();
         if point == *end {
